@@ -344,6 +344,7 @@
         color: var(--green-dark);
       }
 
+
       @media (max-width: 1024px) {
         .features-grid {
           grid-template-columns: repeat(2, 1fr);
@@ -464,27 +465,20 @@
             <label class="form-label">Destination</label>
             <select class="form-control" name="destination">
               <option value="">All Destinations</option>
-              <option>Bwindi Forest</option>
-              <option>Queen Elizabeth NP</option>
-              <option>Murchison Falls</option>
-              <option>Kibale Forest</option>
-              <option>Lake Mburo</option>
-              <option>Kidepo Valley</option>
-              <option>Rwenzori Mountains</option>
-              <option>Jinja — Source of the Nile</option>
+              {% for destination in destinations %}
+              <option>{{destination}}</option>
+              {% endfor %}
+              
             </select>
           </div>
           <div class="form-group">
             <label class="form-label">Tour Type</label>
             <select class="form-control" name="type">
               <option value="">All Types</option>
-              <option>Gorilla Trekking</option>
-              <option>Wildlife Safari</option>
-              <option>Bird Watching</option>
-              <option>Cultural Tour</option>
-              <option>Adventure & Hiking</option>
-              <option>City & Heritage</option>
-              <option>Honeymoon Package</option>
+              {% for tour_type in tour_types %}
+              <option>{{tour_type}}</option>
+              {% endfor %}
+              
             </select>
           </div>
           <div class="form-group">
@@ -505,12 +499,29 @@
             type="submit"
             class="btn btn-green"
             style="padding: 12px 28px"
+            id = "openModalBtn"
           >
             Search Tours
           </button>
         </form>
       </div>
     </div>
+
+<!-- modal triggered when user tries to search a tour type -->
+    <div id="customModal" class="modal-overlay">
+    <div class="modal-content">
+        <span id="closeModalBtn" class="close-button">&times;</span>
+        
+        <h2>Search your trip here</h2>
+        <hr>
+        <p>You are about to secure your spot for this tour package. Would you like to proceed to checkout?</p>
+        
+        <div class="modal-actions">
+            <button class="btn " id="cancelBtn">Cancel</button>
+            <button class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</div>
 
     <!-- ══ FEATURES STRIP ═══════════════════════════ -->
     <section class="features-strip">
@@ -1114,7 +1125,33 @@
     <button class="back-to-top" aria-label="Back to top">↑</button>
 
     <script src="static/js/main.js"></script>
+
+
     <script>
+      const modal = document.getElementById('customModal')
+      const closeModalBtn = document.getElementById('closeModalBtn')
+      const openModalBtn = document.getElementById('openModalBtn')
+      const cancelBtn = document.getElementById('cancelBtn')
+
+      const closeModal = (e)=>{
+        e.preventDefault()
+        modal.classList.remove('is-active')
+      }
+
+      const openModal = (e)=>{
+        e.preventDefault()
+        modal.classList.add('is-active')
+        const fetchDestinations = async ()=>{
+          const response = await fetch('')
+        }
+
+        }
+      
+      openModalBtn.addEventListener('click', openModal)
+      closeModalBtn.addEventListener('click', closeModal)
+      cancelBtn.addEventListener('click', closeModal)
+
+
       // Set min date for search form
       document.querySelector('input[type="date"]').min = new Date()
         .toISOString()

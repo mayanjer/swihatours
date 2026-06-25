@@ -1,8 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .models import *
 
 # Create your views here.
 def home(request):
-    return render(request, 'index.html')
+    destinations = Destination.objects.all()
+    tour_types = TourCategory.objects.all()
+
+    context = {
+        'destinations':destinations,
+        'tour_types':tour_types
+    }
+    return render(request, 'index.html', context)
+
+def fetch_destinations(request):
+    
+    return redirect(home)
+
 
 def about(request):
     return render(request, 'about.html')

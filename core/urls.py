@@ -27,5 +27,8 @@ urlpatterns = [
     path('contact/', contact, name = "contact"),
     path('destinations/', destination, name = 'destinations'),
     path('gallery/', gallery, name = "gallery"),
-    path('packages/', packages, name = "packages")
+    path('packages/', packages, name = "packages"),
+    
+    # these endpoints are used by the fetch api fetch data that updates the DOM
+    path('fetch_destinations/', fetch_destinations)
 ]
