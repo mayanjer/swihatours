@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
 from .models import *
 
 # Create your views here.
@@ -12,9 +13,10 @@ def home(request):
     }
     return render(request, 'index.html', context)
 
+# this view belongs to the fetch API on index.html
 def fetch_destinations(request):
-    
-    return redirect(home)
+    destinations = Destination.objects.all().values("name")
+    return JsonResponse({'destinations':list(destinations)})
 
 
 def about(request):

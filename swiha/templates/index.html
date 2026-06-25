@@ -496,7 +496,6 @@
             </select>
           </div>
           <button
-            type="submit"
             class="btn btn-green"
             style="padding: 12px 28px"
             id = "openModalBtn"
@@ -514,7 +513,7 @@
         
         <h2>Search your trip here</h2>
         <hr>
-        <p>You are about to secure your spot for this tour package. Would you like to proceed to checkout?</p>
+        <p id = "searchTrips"></p>
         
         <div class="modal-actions">
             <button class="btn " id="cancelBtn">Cancel</button>
@@ -1132,19 +1131,25 @@
       const closeModalBtn = document.getElementById('closeModalBtn')
       const openModalBtn = document.getElementById('openModalBtn')
       const cancelBtn = document.getElementById('cancelBtn')
+      const searchedTrips = document.getElementById('searchedTrips')
+
+      // network call
+      const fetchDestinations = async (url)=>{
+        const response = await fetch(url)
+        const data = await response.json()
+        return data
+        }
 
       const closeModal = (e)=>{
         e.preventDefault()
         modal.classList.remove('is-active')
       }
 
-      const openModal = (e)=>{
+      const openModal = async (e)=>{
         e.preventDefault()
         modal.classList.add('is-active')
-        const fetchDestinations = async ()=>{
-          const response = await fetch('')
-        }
-
+        const data = await fetchDestinations("{% url 'fetch_destinations' %}")
+ 
         }
       
       openModalBtn.addEventListener('click', openModal)
