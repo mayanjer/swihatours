@@ -201,7 +201,7 @@ class TeamMember(models.Model):
         db_table = "team_member"
         verbose_name = "Team Member"
         verbose_name_plural = "Team Members"
-        ordering = ["display_order", "full_name"]
+        ordering = ["display_order", "first_name", "last_name"]
  
     def __str__(self):
         return f"{self.full_name} — {self.role}"
