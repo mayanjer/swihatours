@@ -678,7 +678,7 @@
                   <span class="per">/person</span>
                 </div>
                 <a href="#" 
-                class="btn btn-primary btn-sm openModalBtn"
+                class="btn btn-primary btn-sm openModalBtn tour-1"
                 id = "viewTourBtn"
                   >View Tour</a
                 >
@@ -1094,11 +1094,13 @@
       // const viewTourBtn = document.getElementById('viewTourBtn')
 
 
-      // network call
-      const networkCall = async (url)=>{
-        const response = await fetch(url)
-        console.log(response)
+      // this is used for any general fetches required
+      const networkCall = async (url, payload=null)=>{
+        const option = payload ? payload : {}
+        const response = await fetch(url, option)
+        
         if(!response.ok){
+          console.log(response)
           throw console.error("Request failed");
           return []
         }
@@ -1109,13 +1111,17 @@
       // creates the destinatons on the modal
         function modalInfo(data, e) {
           if(e.target.id === "viewDestination"){
+            modalHeading.innerHTML = "Searched Trips"
             for(let i=0;i < data.destinations.length;i++){
             modalContent.innerHTML += `<div class="modal-content">${data.destinations[i].name} </div><br>`
           }
           
-        }else if(e.target.id === "viewTourBtn")[
-          modalContent.innerHTML = "data"
-        ]
+        }else if(e.target.id === "viewTourBtn"){
+          modalHeading.innerHTML = "Tour Details"
+          modalContent.innerHTML = `${data}`
+
+        }
+        
           }
           
   
@@ -1130,19 +1136,16 @@
         if (e.target.id === "viewDestination"){
           const data = await networkCall("{% url 'fetch_destinations' %}")
           modalInfo(data, e)
-          modalHeading.innerHTML = "Searched Trips"
+          
           modal.classList.add('is-active')
         
         }else if(e.target.id === "viewTourBtn"){
-          modalHeading.innerHTML = "Tour Details"
-
-          modalInfo()
+          const data = await networkCall("{% url 'fetch_tour_details' %}", {'id':"given"})
+          console.log(data)
+          modalInfo(data, e)
           modal.classList.add('is-active')
-
         }
         
-        
-        modalInfo(data, e)  
       } 
 
       openModalBtn.forEach((button)=>button.addEventListener('click', openModal))

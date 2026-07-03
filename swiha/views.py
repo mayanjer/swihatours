@@ -20,6 +20,10 @@ def fetch_destinations(request):
     destinations = Destination.objects.all().values("name")
     return JsonResponse({'destinations':list(destinations)})
 
+def fetch_tour_details(request):
+    tours = TourPackage.objects.all().values("title")
+    return JsonResponse({'tours':list(tours)})
+
 
 def about(request):
     return render(request, 'about.html')
