@@ -344,7 +344,6 @@
         color: var(--green-dark);
       }
 
-
       @media (max-width: 1024px) {
         .features-grid {
           grid-template-columns: repeat(2, 1fr);
@@ -468,7 +467,6 @@
               {% for destination in destinations %}
               <option>{{destination}}</option>
               {% endfor %}
-              
             </select>
           </div>
           <div class="form-group">
@@ -478,7 +476,6 @@
               {% for tour_type in tour_types %}
               <option>{{tour_type}}</option>
               {% endfor %}
-              
             </select>
           </div>
           <div class="form-group">
@@ -498,7 +495,7 @@
           <button
             class="btn btn-green openModalBtn"
             style="padding: 12px 28px"
-          id = "viewDestination"
+            id="viewDestination"
           >
             Search Tours
           </button>
@@ -506,21 +503,21 @@
       </div>
     </div>
 
-<!-- modal triggered when user tries to search a tour type -->
+    <!-- custom modal for this page -->
     <div id="customModal" class="modal-overlay">
-    <div class="modal-content">
+      <div class="modal-content">
         <span id="closeModalBtn" class="close-button">&times;</span>
-        
-        <h2 id = "modalHeading"></h2>
-        <hr>
-        <p id = "modalContent"></p>
-        
+
+        <h2 id="modalHeading"></h2>
+        <hr />
+        <p id="modalContent"></p>
+
         <div class="modal-actions">
-            <button class="btn " id="cancelBtn">Cancel</button>
-            <button class="btn btn-primary">Search</button>
+          <button class="btn" id="cancelBtn">Cancel</button>
+          <button class="btn btn-primary">Search</button>
         </div>
+      </div>
     </div>
-</div>
 
     <!-- ══ FEATURES STRIP ═══════════════════════════ -->
     <section class="features-strip">
@@ -646,7 +643,8 @@
           <div class="title-line"></div>
         </div>
         <div class="grid-3">
-          <div class="card reveal">
+          {% for package in best_tour_packages %}
+          <div class="card reveal reveal-delay-{{forloop.counter}} ">
             <div class="card-img">
               <img
                 src="{% static 'images/gorilla-trek.jpg'%}"
@@ -655,15 +653,16 @@
               <span class="badge">Best Seller</span>
             </div>
             <div class="card-body">
-              <span class="card-tag">{{ best_tour_packages.0.category }}</span>
-              <div class="card-title">{{best_tour_packages.0.title}}</div>
-              <div class="card-text">
-                {{best_tour_packages.0.short_description}}
-              </div>
+              <span class="card-tag">{{ package.category }}</span>
+              <div class="card-title tour-id">{{package.title}}</div>
+              <div class="card-text">{{package.short_description}}</div>
               <div class="card-meta">
-                <span>🗓 {{ best_tour_packages.0.duration_days}} Days</span>
-                <span>📍 {{ best_tour_packages.0.destination.name}}</span>
-                <span>👥 {{ best_tour_packages.0.min_group_size}}-{{best_tour_packages.0.max_group_size}} People</span>
+                <span>🗓 {{ package.duration_days}} Days</span>
+                <span>📍 {{ package.destination.name}}</span>
+                <span
+                  >👥 {{ package.min_group_size}}-{{package.max_group_size}}
+                  People</span
+                >
               </div>
               <div
                 style="
@@ -674,96 +673,26 @@
               >
                 <div class="card-price">
                   <span class="from">From</span>
-                  <span class="amount">shs. {{best_tour_packages.0.price_per_person|floatformat:0}}</span>
+                  <span class="amount"
+                    >shs. {{package.price_per_person|floatformat:0}}</span
+                  >
                   <span class="per">/person</span>
                 </div>
-                <a href="#" 
-                class="btn btn-primary btn-sm openModalBtn tour-1"
-                id = "viewTourBtn"
+                <a
+                  href="#"
+                  class="btn btn-primary btn-sm openModalBtn"
+                  id="viewTour"
+                  data-tour-id="{{ package.id }}"
                   >View Tour</a
                 >
               </div>
             </div>
           </div>
-
-          <div class="card reveal reveal-delay-1">
-            <div class="card-img">
-              <img
-                src="https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=600&q=80"
-                alt="Queen Elizabeth Safari"
-              />
-            </div>
-            <div class="card-body">
-              <span class="card-tag">{{ best_tour_packages.1.category}}</span>
-              <div class="card-title">{{ best_tour_packages.1.title}}</div>
-              <div class="card-text">
-                {{ best_tour_packages.1.short_description }}
-              </div>
-              <div class="card-meta">
-                <span>🗓 {{ best_tour_packages.1.duration_days}} Days</span>
-                <span>📍 {{ best_tour_packages.1.destination.name}}</span>
-                <span>👥 {{ best_tour_packages.1.min_group_size}}-{{ best_tour_packages.1.max_group_size}} People</span>
-              </div>
-              <div
-                style="
-                  display: flex;
-                  justify-content: space-between;
-                  align-items: center;
-                "
-              >
-                <div class="card-price">
-                  <span class="from">From</span>
-                  <span class="amount">shs. {{ best_tour_packages.1.price_per_person|floatformat:0}}</span>
-                  <span class="per">/person</span>
-                </div>
-                <a href="packages.html" class="btn btn-primary btn-sm"
-                  >View Tour</a
-                >
-              </div>
-            </div>
-          </div>
-
-          <div class="card reveal reveal-delay-2">
-            <div class="card-img">
-              <img
-                src="https://images.unsplash.com/photo-1504432842672-1a79f78e4084?w=600&q=80"
-                alt="Chimpanzee Trekking"
-              />
-              <span class="badge badge-green">New</span>
-            </div>
-            <div class="card-body">
-              <span class="card-tag">{{ best_tour_packages.2.category}}</span>
-              <div class="card-title">{{ best_tour_packages.2.title}}</div>
-              <div class="card-text">
-                {{ best_tour_packages.2.short_description}}
-              </div>
-              <div class="card-meta">
-                <span>🗓 {{ best_tour_packages.2.duration_days}} Days</span>
-                <span>📍 {{ best_tour_packages.2.destination.name}}</span>
-                <span>👥 {{best_tour_packages.2.min_group_size}}-{{ best_tour_packages.2.max_group_size}} People</span>
-              </div>
-              <div
-                style="
-                  display: flex;
-                  justify-content: space-between;
-                  align-items: center;
-                "
-              >
-                <div class="card-price">
-                  <span class="from">From</span>
-                  <span class="amount">shs. {{ best_tour_packages.2.price_per_person | floatformat:0}}</span>
-                  <span class="per">/person</span>
-                </div>
-                <a href="packages.html" class="btn btn-primary btn-sm"
-                  >View Tour</a
-                >
-              </div>
-            </div>
-          </div>
+          {% endfor %}
         </div>
         <div style="text-align: center; margin-top: 48px">
           <a href="{% url 'packages' %}" class="btn btn-green"
-            >View All  Packages →</a
+            >View All Packages →</a
           >
         </div>
       </div>
@@ -782,7 +711,7 @@
           <div class="title-line"></div>
         </div>
         <div class="dest-grid">
-          {% for destination in destinations  %}
+          {% for destination in destinations %}
           <div class="dest-card">
             <img
               src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800&q=80"
@@ -795,7 +724,6 @@
             </div>
           </div>
           {% endfor %}
-          
         </div>
         <div style="text-align: center; margin-top: 40px">
           <a href="{% url 'destinations' %}" class="btn btn-green"
@@ -1083,80 +1011,89 @@
 
     <script src="static/js/main.js"></script>
 
-
     <script>
-      const modal = document.getElementById('customModal')
-      const modalHeading = document.getElementById('modalHeading')
-      const closeModalBtn = document.getElementById('closeModalBtn')
-      const openModalBtn = document.querySelectorAll('.openModalBtn')
-      const cancelBtn = document.getElementById('cancelBtn')
-      const modalContent = document.getElementById('modalContent')
-      // const viewTourBtn = document.getElementById('viewTourBtn')
+      const modal = document.getElementById("customModal");
+      const modalHeading = document.getElementById("modalHeading");
+      const closeModalBtn = document.getElementById("closeModalBtn");
+      const openModalBtn = document.querySelectorAll(".openModalBtn");
+      const cancelBtn = document.getElementById("cancelBtn");
+      const modalContent = document.getElementById("modalContent");
+      const tourIds = document.querySelectorAll(".tour-id");
+      const csrftoken = "{{ csrf_token }}";
+      let currentTitle;
 
+      // this is used for any general network calls required
+      const networkCall = async (url, payload = null) => {
+        const option = payload
+          ? {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrftoken,
+              },
+              body: JSON.stringify({
+                payload: payload,
+              }),
+            }
+          : {};
+        const response = await fetch(url, option);
 
-      // this is used for any general fetches required
-      const networkCall = async (url, payload=null)=>{
-        const option = payload ? payload : {}
-        const response = await fetch(url, option)
-        
-        if(!response.ok){
-          console.log(response)
+        if (!response.ok) {
+          console.log(response);
           throw console.error("Request failed");
-          return []
+          return [];
         }
-        const data = await response.json()   
-        return data
-        }
+        const data = await response.json();
+        return data;
+      };
 
-      // creates the destinatons on the modal
-        function modalInfo(data, e) {
-          if(e.target.id === "viewDestination"){
-            modalHeading.innerHTML = "Searched Trips"
-            for(let i=0;i < data.destinations.length;i++){
-            modalContent.innerHTML += `<div class="modal-content">${data.destinations[i].name} </div><br>`
+      // writes information on all modals
+      function modalInfo(data, e) {
+        if (e.target.id === "viewDestination") {
+          modalHeading.innerHTML = "Searched Trips";
+          for (let i = 0; i < data.destinations.length; i++) {
+            modalContent.innerHTML += `<div class="modal-content">${data.destinations[i].name} </div><br>`;
           }
-          
-        }else if(e.target.id === "viewTourBtn"){
-          modalHeading.innerHTML = "Tour Details"
-          modalContent.innerHTML = `${data}`
-
+        } else if (e.target.id === "viewTour") {
+          modalHeading.innerHTML = "Tour Details";
+          for (let i = 0; i < data.tours.length; i++) {
+            modalContent.innerHTML += `<div class="modal-content">${data.tours[i].title} </div><br>`;
+          }
         }
-        
-          }
-          
-  
-      const closeModal = (e)=>{
-        e.preventDefault()
-        modal.classList.remove('is-active')
-        modalHeading.innerHTML = " "
-        modalContent.innerHTML = " "
       }
-      const openModal = async (e)=>{
-        e.preventDefault()
-        if (e.target.id === "viewDestination"){
-          const data = await networkCall("{% url 'fetch_destinations' %}")
-          modalInfo(data, e)
-          
-          modal.classList.add('is-active')
-        
-        }else if(e.target.id === "viewTourBtn"){
-          const data = await networkCall("{% url 'fetch_tour_details' %}", {'id':"given"})
-          console.log(data)
-          modalInfo(data, e)
-          modal.classList.add('is-active')
-        }
-        
-      } 
 
-      openModalBtn.forEach((button)=>button.addEventListener('click', openModal))
-      closeModalBtn.addEventListener('click', closeModal)
-      cancelBtn.addEventListener('click', closeModal)
+      const closeModal = (e) => {
+        e.preventDefault();
+        modal.classList.remove("is-active");
+        modalHeading.innerHTML = " ";
+        modalContent.innerHTML = " ";
+      };
+      const openModal = async (e) => {
+        e.preventDefault();
+        if (e.target.id === "viewDestination") {
+          const data = await networkCall("{% url 'fetch_destinations' %}");
+          modalInfo(data, e);
+          modal.classList.add("is-active");
+        } else if (e.target.id === "viewTour") {
+          const data = await networkCall(
+            "{% url 'fetch_tour_details' %}",
+            payload = e.target.dataset.tourId,
+          );
+          modalInfo(data, e);
+          modal.classList.add("is-active");
+        }
+      };
+
+      openModalBtn.forEach((button) =>
+        button.addEventListener("click", openModal),
+      );
+      closeModalBtn.addEventListener("click", closeModal);
+      cancelBtn.addEventListener("click", closeModal);
 
       // Set min date for search form
       document.querySelector('input[type="date"]').min = new Date()
         .toISOString()
         .split("T")[0];
-
     </script>
   </body>
 </html>

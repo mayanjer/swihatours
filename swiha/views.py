@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.db.models import Count
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import JsonResponse
 from .models import *
 
@@ -20,7 +21,9 @@ def fetch_destinations(request):
     destinations = Destination.objects.all().values("name")
     return JsonResponse({'destinations':list(destinations)})
 
+@ensure_csrf_cookie
 def fetch_tour_details(request):
+    print(request.body)
     tours = TourPackage.objects.all().values("title")
     return JsonResponse({'tours':list(tours)})
 
