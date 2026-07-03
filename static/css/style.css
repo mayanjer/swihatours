@@ -177,6 +177,7 @@ h4 {
     z-index: 1000;
     justify-content: center;
     align-items: center;
+    
 }
 
 .modal-content {
@@ -187,6 +188,9 @@ h4 {
     max-width: 500px;
     position: relative;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    max-height: 70vh;
+    overflow-y: auto;
+    
 }
 
 .close-button {
@@ -597,6 +601,8 @@ footer {
   display: flex;
   gap: 10px;
 }
+
+
 .social-btn {
   width: 36px;
   height: 36px;

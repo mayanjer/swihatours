@@ -1,15 +1,17 @@
 from django.shortcuts import render, redirect
+from django.db.models import Count
 from django.http import JsonResponse
 from .models import *
 
 # Create your views here.
 def home(request):
-    destinations = Destination.objects.all()
-    tour_types = TourCategory.objects.all()
-
+    destinations = Destination.objects.all()[:5]
+    best_tour_packages = TourPackage.objects.all()[:3]
+    available_tours = TourPackage.objects.values('destination').annotate(total=Count('id'))
     context = {
         'destinations':destinations,
-        'tour_types':tour_types
+        'best_tour_packages':list(best_tour_packages),
+        'available_tours': available_tours
     }
     return render(request, 'index.html', context)
 

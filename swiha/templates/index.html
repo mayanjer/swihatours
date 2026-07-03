@@ -496,9 +496,9 @@
             </select>
           </div>
           <button
-            class="btn btn-green"
+            class="btn btn-green openModalBtn"
             style="padding: 12px 28px"
-            id = "openModalBtn"
+          id = "viewDestination"
           >
             Search Tours
           </button>
@@ -511,9 +511,9 @@
     <div class="modal-content">
         <span id="closeModalBtn" class="close-button">&times;</span>
         
-        <h2>Search your trip here</h2>
+        <h2 id = "modalHeading"></h2>
         <hr>
-        <p id = "searchTrips"></p>
+        <p id = "modalContent"></p>
         
         <div class="modal-actions">
             <button class="btn " id="cancelBtn">Cancel</button>
@@ -649,22 +649,21 @@
           <div class="card reveal">
             <div class="card-img">
               <img
-                src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80"
+                src="{% static 'images/gorilla-trek.jpg'%}"
                 alt="Gorilla Trekking"
               />
               <span class="badge">Best Seller</span>
             </div>
             <div class="card-body">
-              <span class="card-tag">Gorilla Trekking</span>
-              <div class="card-title">Bwindi Gorilla Trek & Safari</div>
+              <span class="card-tag">{{ best_tour_packages.0.category }}</span>
+              <div class="card-title">{{best_tour_packages.0.title}}</div>
               <div class="card-text">
-                Track mountain gorillas in Bwindi Impenetrable Forest — a
-                face-to-face encounter you'll remember for a lifetime.
+                {{best_tour_packages.0.short_description}}
               </div>
               <div class="card-meta">
-                <span>🗓 5 Days</span>
-                <span>📍 Bwindi Forest</span>
-                <span>👥 2–8 People</span>
+                <span>🗓 {{ best_tour_packages.0.duration_days}} Days</span>
+                <span>📍 {{ best_tour_packages.0.destination.name}}</span>
+                <span>👥 {{ best_tour_packages.0.min_group_size}}-{{best_tour_packages.0.max_group_size}} People</span>
               </div>
               <div
                 style="
@@ -675,10 +674,12 @@
               >
                 <div class="card-price">
                   <span class="from">From</span>
-                  <span class="amount">$1,850</span>
+                  <span class="amount">shs. {{best_tour_packages.0.price_per_person|floatformat:0}}</span>
                   <span class="per">/person</span>
                 </div>
-                <a href="packages.html" class="btn btn-primary btn-sm"
+                <a href="#" 
+                class="btn btn-primary btn-sm openModalBtn"
+                id = "viewTourBtn"
                   >View Tour</a
                 >
               </div>
@@ -693,16 +694,15 @@
               />
             </div>
             <div class="card-body">
-              <span class="card-tag">Wildlife and Safari</span>
-              <div class="card-title">Classic Safari Package</div>
+              <span class="card-tag">{{ best_tour_packages.1.category}}</span>
+              <div class="card-title">{{ best_tour_packages.1.title}}</div>
               <div class="card-text">
-                Witness the tree-climbing lions, elephant herds, and legendary
-                Kazinga Channel boat cruise.
+                {{ best_tour_packages.1.short_description }}
               </div>
               <div class="card-meta">
-                <span>🗓 4 Days</span>
-                <span>📍 QENP</span>
-                <span>👥 2–10 People</span>
+                <span>🗓 {{ best_tour_packages.1.duration_days}} Days</span>
+                <span>📍 {{ best_tour_packages.1.destination.name}}</span>
+                <span>👥 {{ best_tour_packages.1.min_group_size}}-{{ best_tour_packages.1.max_group_size}} People</span>
               </div>
               <div
                 style="
@@ -713,7 +713,7 @@
               >
                 <div class="card-price">
                   <span class="from">From</span>
-                  <span class="amount">$1,200</span>
+                  <span class="amount">shs. {{ best_tour_packages.1.price_per_person|floatformat:0}}</span>
                   <span class="per">/person</span>
                 </div>
                 <a href="packages.html" class="btn btn-primary btn-sm"
@@ -732,16 +732,15 @@
               <span class="badge badge-green">New</span>
             </div>
             <div class="card-body">
-              <span class="card-tag">Primate Safari</span>
-              <div class="card-title">Kibale Chimpanzee Trek</div>
+              <span class="card-tag">{{ best_tour_packages.2.category}}</span>
+              <div class="card-title">{{ best_tour_packages.2.title}}</div>
               <div class="card-text">
-                Join our primatologists in Kibale Forest to spend time with
-                chimpanzees and 12 other primate species.
+                {{ best_tour_packages.2.short_description}}
               </div>
               <div class="card-meta">
-                <span>🗓 3 Days</span>
-                <span>📍 Kibale Forest</span>
-                <span>👥 2–6 People</span>
+                <span>🗓 {{ best_tour_packages.2.duration_days}} Days</span>
+                <span>📍 {{ best_tour_packages.2.destination.name}}</span>
+                <span>👥 {{best_tour_packages.2.min_group_size}}-{{ best_tour_packages.2.max_group_size}} People</span>
               </div>
               <div
                 style="
@@ -752,7 +751,7 @@
               >
                 <div class="card-price">
                   <span class="from">From</span>
-                  <span class="amount">$980</span>
+                  <span class="amount">shs. {{ best_tour_packages.2.price_per_person | floatformat:0}}</span>
                   <span class="per">/person</span>
                 </div>
                 <a href="packages.html" class="btn btn-primary btn-sm"
@@ -763,8 +762,8 @@
           </div>
         </div>
         <div style="text-align: center; margin-top: 48px">
-          <a href="packages.html" class="btn btn-green"
-            >View All 85+ Packages →</a
+          <a href="{% url 'packages' %}" class="btn btn-green"
+            >View All  Packages →</a
           >
         </div>
       </div>
@@ -783,64 +782,23 @@
           <div class="title-line"></div>
         </div>
         <div class="dest-grid">
+          {% for destination in destinations  %}
           <div class="dest-card">
             <img
               src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800&q=80"
               alt="Bwindi Forest"
             />
             <div class="dest-overlay">
-              <div class="dest-name">Bwindi Impenetrable Forest</div>
-              <div class="dest-tours">12 tours available</div>
+              <div class="dest-name">{{ destination }}</div>
+              <div class="dest-tours">2 tours available</div>
               <a href="destinations.html" class="dest-arrow">Explore ↗</a>
             </div>
           </div>
-          <div class="dest-card">
-            <img
-              src="https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=500&q=80"
-              alt="Queen Elizabeth NP"
-            />
-            <div class="dest-overlay">
-              <div class="dest-name">Queen Elizabeth NP</div>
-              <div class="dest-tours">9 tours available</div>
-              <a href="destinations.html" class="dest-arrow">Explore ↗</a>
-            </div>
-          </div>
-          <div class="dest-card">
-            <img
-              src="https://images.unsplash.com/photo-1504432842672-1a79f78e4084?w=500&q=80"
-              alt="Murchison Falls"
-            />
-            <div class="dest-overlay">
-              <div class="dest-name">Murchison Falls</div>
-              <div class="dest-tours">8 tours available</div>
-              <a href="destinations.html" class="dest-arrow">Explore ↗</a>
-            </div>
-          </div>
-          <div class="dest-card">
-            <img
-              src="https://images.unsplash.com/photo-1562159948-7e776f7a5e5c?w=500&q=80"
-              alt="Jinja"
-            />
-            <div class="dest-overlay">
-              <div class="dest-name">Jinja — Nile Source</div>
-              <div class="dest-tours">6 tours available</div>
-              <a href="destinations.html" class="dest-arrow">Explore ↗</a>
-            </div>
-          </div>
-          <div class="dest-card">
-            <img
-              src="https://images.unsplash.com/photo-1591825729269-caeb344f6df2?w=500&q=80"
-              alt="Kidepo Valley"
-            />
-            <div class="dest-overlay">
-              <div class="dest-name">Kidepo Valley</div>
-              <div class="dest-tours">5 tours available</div>
-              <a href="destinations.html" class="dest-arrow">Explore ↗</a>
-            </div>
-          </div>
+          {% endfor %}
+          
         </div>
         <div style="text-align: center; margin-top: 40px">
-          <a href="destinations.html" class="btn btn-green"
+          <a href="{% url 'destinations' %}" class="btn btn-green"
             >All Destinations →</a
           >
         </div>
@@ -1128,47 +1086,74 @@
 
     <script>
       const modal = document.getElementById('customModal')
+      const modalHeading = document.getElementById('modalHeading')
       const closeModalBtn = document.getElementById('closeModalBtn')
-      const openModalBtn = document.getElementById('openModalBtn')
+      const openModalBtn = document.querySelectorAll('.openModalBtn')
       const cancelBtn = document.getElementById('cancelBtn')
-      const searchedTrips = document.getElementById('searchedTrips')
+      const modalContent = document.getElementById('modalContent')
+      // const viewTourBtn = document.getElementById('viewTourBtn')
+
 
       // network call
-      const fetchDestinations = async (url)=>{
+      const networkCall = async (url)=>{
         const response = await fetch(url)
-        const data = await response.json()
+        console.log(response)
+        if(!response.ok){
+          throw console.error("Request failed");
+          return []
+        }
+        const data = await response.json()   
         return data
         }
 
+      // creates the destinatons on the modal
+        function modalInfo(data, e) {
+          if(e.target.id === "viewDestination"){
+            for(let i=0;i < data.destinations.length;i++){
+            modalContent.innerHTML += `<div class="modal-content">${data.destinations[i].name} </div><br>`
+          }
+          
+        }else if(e.target.id === "viewTourBtn")[
+          modalContent.innerHTML = "data"
+        ]
+          }
+          
+  
       const closeModal = (e)=>{
         e.preventDefault()
         modal.classList.remove('is-active')
+        modalHeading.innerHTML = " "
+        modalContent.innerHTML = " "
       }
-
       const openModal = async (e)=>{
         e.preventDefault()
-        modal.classList.add('is-active')
-        const data = await fetchDestinations("{% url 'fetch_destinations' %}")
- 
+        if (e.target.id === "viewDestination"){
+          const data = await networkCall("{% url 'fetch_destinations' %}")
+          modalInfo(data, e)
+          modalHeading.innerHTML = "Searched Trips"
+          modal.classList.add('is-active')
+        
+        }else if(e.target.id === "viewTourBtn"){
+          modalHeading.innerHTML = "Tour Details"
+
+          modalInfo()
+          modal.classList.add('is-active')
+
         }
-      
-      openModalBtn.addEventListener('click', openModal)
+        
+        
+        modalInfo(data, e)  
+      } 
+
+      openModalBtn.forEach((button)=>button.addEventListener('click', openModal))
       closeModalBtn.addEventListener('click', closeModal)
       cancelBtn.addEventListener('click', closeModal)
-
 
       // Set min date for search form
       document.querySelector('input[type="date"]').min = new Date()
         .toISOString()
         .split("T")[0];
 
-      // Tour search redirect (frontend only — backend will handle actual filtering)
-      document
-        .getElementById("tourSearchForm")
-        .addEventListener("submit", (e) => {
-          e.preventDefault();
-          window.location.href = "packages.html";
-        });
     </script>
   </body>
 </html>
