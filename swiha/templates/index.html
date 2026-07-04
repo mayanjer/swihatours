@@ -465,7 +465,7 @@
             <select class="form-control selectedDestination" name="destination">
               <option value="">All Destinations</option>
               {% for destination in destinations %}
-              <option class="destination" data-destination="{{destination}}" >
+              <option class="destination" data-destination="{{destination}}">
                 {{destination}}
               </option>
               {% endfor %}
@@ -647,7 +647,7 @@
         </div>
         <div class="grid-3">
           {% for package in best_tour_packages %}
-          <div class="card reveal reveal-delay-{{forloop.counter}} ">
+          <div class="card reveal reveal-delay-{{forloop.counter0}} ">
             <div class="card-img">
               <img
                 src="{% static 'images/gorilla-trek.jpg'%}"
@@ -1023,7 +1023,9 @@
       const modalContent = document.getElementById("modalContent");
       const tourIds = document.querySelectorAll(".tour-id");
       const csrftoken = "{{ csrf_token }}";
-      const selectedDestination = document.querySelector('.selectedDestination')
+      const selectedDestination = document.querySelector(
+        ".selectedDestination",
+      );
 
       // this is used for any general network calls required
       const networkCall = async (url, payload = null) => {
@@ -1050,9 +1052,6 @@
         return data;
       };
 
-    
-      
-
       // writes information on all modals
       function modalInfo(data, e) {
         if (e.target.id === "viewDestination") {
@@ -1077,7 +1076,10 @@
       const openModal = async (e) => {
         e.preventDefault();
         if (e.target.id === "viewDestination") {
-          const data = await networkCall("{% url 'fetch_destinations' %}", selectedDestination.value);
+          const data = await networkCall(
+            "{% url 'fetch_destinations' %}",
+            (payload = selectedDestination.value),
+          );
           modalInfo(data, e);
           modal.classList.add("is-active");
         } else if (e.target.id === "viewTour") {

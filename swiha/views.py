@@ -19,13 +19,11 @@ def home(request):
 # this view belongs to the fetch API on index.html
 @ensure_csrf_cookie
 def fetch_destinations(request):
-    print(request.body)
     destinations = Destination.objects.all().values("name")
     return JsonResponse({'destinations':list(destinations)})
 
 @ensure_csrf_cookie
 def fetch_tour_details(request):
-    print(request.body)
     tours = TourPackage.objects.all().values("title")
     return JsonResponse({'tours':list(tours)})
 
