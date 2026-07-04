@@ -17,7 +17,9 @@ def home(request):
     return render(request, 'index.html', context)
 
 # this view belongs to the fetch API on index.html
+@ensure_csrf_cookie
 def fetch_destinations(request):
+    print(request.body)
     destinations = Destination.objects.all().values("name")
     return JsonResponse({'destinations':list(destinations)})
 

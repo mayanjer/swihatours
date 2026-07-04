@@ -462,10 +462,12 @@
         <form class="search-bar" id="tourSearchForm">
           <div class="form-group">
             <label class="form-label">Destination</label>
-            <select class="form-control" name="destination">
+            <select class="form-control selectedDestination" name="destination">
               <option value="">All Destinations</option>
               {% for destination in destinations %}
-              <option>{{destination}}</option>
+              <option class="destination" data-destination="{{destination}}" >
+                {{destination}}
+              </option>
               {% endfor %}
             </select>
           </div>
@@ -508,13 +510,14 @@
       <div class="modal-content">
         <span id="closeModalBtn" class="close-button">&times;</span>
 
-        <h2 id="modalHeading"></h2>
+        <h2 id="modalHeading" style="text-align: center"></h2>
         <hr />
+        <br />
         <p id="modalContent"></p>
 
         <div class="modal-actions">
-          <button class="btn" id="cancelBtn">Cancel</button>
-          <button class="btn btn-primary">Search</button>
+          <button class="btn btn-primary" id="cancelBtn">Cancel</button>
+          <!-- <button class="btn btn-primary">Search</button> -->
         </div>
       </div>
     </div>
@@ -1020,7 +1023,7 @@
       const modalContent = document.getElementById("modalContent");
       const tourIds = document.querySelectorAll(".tour-id");
       const csrftoken = "{{ csrf_token }}";
-      let currentTitle;
+      const selectedDestination = document.querySelector('.selectedDestination')
 
       // this is used for any general network calls required
       const networkCall = async (url, payload = null) => {
@@ -1047,10 +1050,13 @@
         return data;
       };
 
+    
+      
+
       // writes information on all modals
       function modalInfo(data, e) {
         if (e.target.id === "viewDestination") {
-          modalHeading.innerHTML = "Searched Trips";
+          modalHeading.innerHTML = "Available Tours";
           for (let i = 0; i < data.destinations.length; i++) {
             modalContent.innerHTML += `<div class="modal-content">${data.destinations[i].name} </div><br>`;
           }
@@ -1071,13 +1077,13 @@
       const openModal = async (e) => {
         e.preventDefault();
         if (e.target.id === "viewDestination") {
-          const data = await networkCall("{% url 'fetch_destinations' %}");
+          const data = await networkCall("{% url 'fetch_destinations' %}", selectedDestination.value);
           modalInfo(data, e);
           modal.classList.add("is-active");
         } else if (e.target.id === "viewTour") {
           const data = await networkCall(
             "{% url 'fetch_tour_details' %}",
-            payload = e.target.dataset.tourId,
+            (payload = e.target.dataset.tourId), //here, the data attribute was inside the forloop so each target was in the loop too
           );
           modalInfo(data, e);
           modal.classList.add("is-active");
@@ -1089,6 +1095,7 @@
       );
       closeModalBtn.addEventListener("click", closeModal);
       cancelBtn.addEventListener("click", closeModal);
+      modal.addEventListener("click", closeModal);
 
       // Set min date for search form
       document.querySelector('input[type="date"]').min = new Date()
