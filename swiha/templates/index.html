@@ -465,8 +465,8 @@
             <select class="form-control selectedDestination" name="destination">
               <option value="">All Destinations</option>
               {% for destination in destinations %}
-              <option class="destination" data-destination="{{destination}}">
-                {{destination}}
+              <option class="destination" data-destination="{{destination.name}}">
+                {{destination.name}}
               </option>
               {% endfor %}
             </select>
@@ -721,7 +721,7 @@
               alt="Bwindi Forest"
             />
             <div class="dest-overlay">
-              <div class="dest-name">{{ destination }}</div>
+              <div class="dest-name">{{ destination.name }}</div>
               <div class="dest-tours">2 tours available</div>
               <a href="destinations.html" class="dest-arrow">Explore ↗</a>
             </div>
@@ -1056,8 +1056,8 @@
       function modalInfo(data, e) {
         if (e.target.id === "viewDestination") {
           modalHeading.innerHTML = "Available Tours";
-          for (let i = 0; i < data.destinations.length; i++) {
-            modalContent.innerHTML += `<div class="modal-content">${data.destinations[i].name} </div><br>`;
+          for (let i = 0; i < data.packages.length; i++) {
+            modalContent.innerHTML += `<div class="modal-content">${data.packages[i].title} </div><br>`;
           }
         } else if (e.target.id === "viewTour") {
           modalHeading.innerHTML = "Tour Details";
@@ -1077,7 +1077,7 @@
         e.preventDefault();
         if (e.target.id === "viewDestination") {
           const data = await networkCall(
-            "{% url 'fetch_destinations' %}",
+            "{% url 'fetch_packages' %}",
             (payload = selectedDestination.value),
           );
           modalInfo(data, e);

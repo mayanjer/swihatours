@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render, redirect
 from django.db.models import Count
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -18,13 +19,23 @@ def home(request):
 
 # this view belongs to the fetch API on index.html
 @ensure_csrf_cookie
-def fetch_destinations(request):
-    destinations = Destination.objects.all().values("name")
-    return JsonResponse({'destinations':list(destinations)})
+def fetch_packages(request):
+    decoded_string = request.body.decode('utf-8')
+    data = json.loads(decoded_string)
+    payload = data.get('payload')
+    destination_name = payload.split('(')[0]
+    destination = Destination.objects.get(name = destination_name.strip())
+    packages = TourPackage.objects.filter(destination = destination).values("title","destination")
+    return JsonResponse({'packages': list(packages)})
 
 @ensure_csrf_cookie
 def fetch_tour_details(request):
-    tours = TourPackage.objects.all().values("title")
+    print(request.body)
+    decorded_string = request.body.decode('utf-8')
+    data = json.loads(decorded_string)
+    payload = data.get('payload')
+    tours = TourPackage.objects.filter(id = payload).values("title", "category", "destination")
+    print(tours)
     return JsonResponse({'tours':list(tours)})
 
 
