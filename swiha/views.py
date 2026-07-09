@@ -34,13 +34,15 @@ def fetch_tour_details(request):
     decorded_string = request.body.decode('utf-8')
     data = json.loads(decorded_string)
     payload = data.get('payload')
-    tours = TourPackage.objects.filter(id = payload).values("title", "category", "destination")
-    print(tours)
+    print(payload)
+    tours = TourPackage.objects.all().values("title", "category", "destination")
     return JsonResponse({'tours':list(tours)})
 
 
 def about(request):
-    return render(request, 'about.html')
+    team_members = TeamMember.objects.all().values("first_name", "bio", "role", "photo_url")
+    context = {"team_members":list(team_members)}
+    return render(request, 'about.html', context)
 
 def booking(request):
     return render(request, 'booking.html')
