@@ -102,13 +102,10 @@
   <div class="container">
     <div class="filters-inner">
       <button class="filter-chip active" data-filter="all">All Tours</button>
-      <button class="filter-chip" data-filter="gorilla">Gorilla Trekking</button>
-      <button class="filter-chip" data-filter="wildlife">Wildlife Safari</button>
-      <button class="filter-chip" data-filter="chimp">Chimpanzee</button>
-      <button class="filter-chip" data-filter="bird">Bird Watching</button>
-      <button class="filter-chip" data-filter="cultural">Cultural</button>
-      <button class="filter-chip" data-filter="adventure">Adventure</button>
-      <button class="filter-chip" data-filter="honeymoon">Honeymoon</button>
+      {% for package in packages %}
+      <button class="filter-chip" data-filter={{package.slug}}>{{ package.name }}</button>
+      {% endfor %}
+      
       <span class="filters-count">Showing 12 of 85+ tours</span>
     </div>
   </div>
@@ -384,10 +381,12 @@
 <script src="{% static 'js/main.js' %}"></script>
 <script>
   // Filter chips — frontend only (backend will filter real data)
-  document.querySelectorAll('.filter-chip').forEach(chip => {
+  const filterChips = document.querySelectorAll('.filter-chip')
+  filterChips.forEach(chip => {
     chip.addEventListener('click', () => {
-      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      filterChips.forEach(c => c.classList.remove('active'));
       chip.classList.add('active');
+      console.log(chip.dataset.filter)
     });
   });
 </script>

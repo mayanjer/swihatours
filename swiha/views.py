@@ -63,4 +63,8 @@ def gallery(request):
     return render(request, 'gallery.html')
 
 def packages(request):
-    return render(request, 'packages.html')
+    packages = TourCategory.objects.all().values('name', 'slug')
+    context = {
+        'packages':packages
+    }
+    return render(request, 'packages.html', context)
