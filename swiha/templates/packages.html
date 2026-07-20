@@ -380,13 +380,43 @@
 <button class="back-to-top">↑</button>
 <script src="{% static 'js/main.js' %}"></script>
 <script>
+
+   const csrftoken = "{{ csrf_token }}";
+   const filterChips = document.querySelectorAll('.filter-chip')
+
+  const networkCall = async (url, payload = null) => {
+        const option = payload
+          ? {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrftoken,
+              },
+              body: JSON.stringify({
+                payload: payload,
+              }),
+            }
+          : {};
+        const response = await fetch(url, option);
+
+        if (!response.ok) {
+          console.log(response);
+          throw console.error("Request failed");
+          return [];
+        }
+        const data = await response.json();
+        return data;
+      };
   // Filter chips — frontend only (backend will filter real data)
-  const filterChips = document.querySelectorAll('.filter-chip')
+  
   filterChips.forEach(chip => {
-    chip.addEventListener('click', () => {
+    chip.addEventListener('click', async () => {
       filterChips.forEach(c => c.classList.remove('active'));
       chip.classList.add('active');
       console.log(chip.dataset.filter)
+      const packages = networkCall('{% url "fetch_custom_packages" %}', payload=chip.dataset.filter)
+      console.log(await packages)
+
     });
   });
 </script>

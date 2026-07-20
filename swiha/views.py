@@ -68,3 +68,9 @@ def packages(request):
         'packages':packages
     }
     return render(request, 'packages.html', context)
+
+def fetch_custom_packages(request):
+    data = json.loads(request.body)
+    tour_category = TourCategory.objects.get(slug = data.get('payload'))
+    tour_packages = TourPackage.objects.filter(category=tour_category).values('title')
+    return JsonResponse({'packages':list(tour_packages)})

@@ -31,5 +31,6 @@ urlpatterns = [
     
     # these endpoints are used by the fetch api fetch data that updates the DOM
     path('fetch_destinations/', fetch_packages, name="fetch_packages"),
-    path('fetch_tour_details/', fetch_tour_details, name = "fetch_tour_details")
+    path('fetch_tour_details/', fetch_tour_details, name = "fetch_tour_details"),
+    path('fetch_custom_packages', fetch_custom_packages, name="fetch_custom_packages")
 ]
